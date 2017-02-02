@@ -1,0 +1,7 @@
+name: TestPlugin
+version: 1.0
+main: cz.sionzee.testplugin.Test
+
+commands:
+  test:
+    description: "/test"
