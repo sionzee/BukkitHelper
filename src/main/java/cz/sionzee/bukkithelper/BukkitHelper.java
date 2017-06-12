@@ -43,8 +43,7 @@ public class BukkitHelper {
 
         Field playersByNameField1;
         try {
-            Assert.assertNotNull("PlayerListField is null!", playerListField);
-            playersByNameField1 = playerListField.getType().getDeclaredField("playersByName");
+            playersByNameField1 = ReflectedAccess.GetPlayerListClass().getDeclaredField("playersByName");
             playersByNameField1.setAccessible(true);
         } catch (NoSuchFieldException e) {
             playersByNameField1 = null;
@@ -66,9 +65,10 @@ public class BukkitHelper {
     static class ReflectedAccess {
 
         private static Class _craftServerClass;
-        private static Class<?> _craftPlayerClass;
+        private static Class _craftPlayerClass;
         private static Class _entityClass;
         private static Class _entityPlayerClass;
+        private static Class _playerListClass;
 
         static {
             try {
@@ -76,6 +76,7 @@ public class BukkitHelper {
                 _craftPlayerClass = Class.forName("org.bukkit.craftbukkit." + version + ".entity.CraftPlayer");
                 _entityClass = Class.forName("net.minecraft.server." + version + ".Entity");
                 _entityPlayerClass = Class.forName("net.minecraft.server." + version + ".EntityPlayer");
+                _playerListClass = Class.forName("net.minecraft.server." + version + ".PlayerList");
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
@@ -95,6 +96,10 @@ public class BukkitHelper {
 
         static Class<?> GetEntityPlayerClass() {
             return _entityPlayerClass;
+        }
+
+        static Class<?> GetPlayerListClass() {
+            return _playerListClass;
         }
 
         static Object GetCraftServerInstance() {
