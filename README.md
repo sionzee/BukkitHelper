@@ -14,6 +14,11 @@ Copy content of src (without testplugin package) into your plugin.
 There is class which have to make implementation easier (use if you want)
 __BukkitHelperTools__
 
+## Update 1.1
+* Accessing classes via reflection by finding class (it's add support for cross versions)
+* Added Maven Support
+* Added EventHelper class what allows auto register listeners. You don't need care about it more.
+
 ### BukkitHelperTools
 
 ```java
@@ -35,9 +40,29 @@ public class YourPlugin extends JavaPlugin {
         BukkitHelperTools.OnJoin(event.getPlayer(), TestPlayer.class);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST) // To call it latest
+    @EventHandler(priority = EventPriority.HIGHEST) // To call it last
     void onLeave(PlayerQuitEvent event) {
         BukkitHelperTools.OnLeave(event.getPlayer());
     }
+}
+```
+
+### EventHelper
+This class allow you register register Bukkit Listener automatically.
+There is a Consumer for your custom constructor declaration.
+If you don't have idea how to use it, copy it from example below this and edit package name to your package.
+
+```java
+/* Plugin Class */
+@Override
+public void onEnable() {
+     EventHelper.RegisterAllListeners("cz.sionzee.testplugin", (listenerClass -> {
+        try {
+            Bukkit.getPluginManager().registerEvents(listenerClass.newInstance(), this);
+            Bukkit.broadcastMessage("Listener " + listenerClass.getSimpleName() + " was registered automatically.");
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }));
 }
 ```
