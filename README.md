@@ -53,16 +53,17 @@ There is a Consumer for your custom constructor declaration.
 If you don't have idea how to use it, copy it from example below this and edit package name to your package.
 
 ```java
-/* Plugin Class */
-@Override
-public void onEnable() {
-     EventHelper.RegisterAllListeners("cz.sionzee.testplugin", (listenerClass -> {
-        try {
-            Bukkit.getPluginManager().registerEvents(listenerClass.newInstance(), this);
-            Bukkit.broadcastMessage("Listener " + listenerClass.getSimpleName() + " was registered automatically.");
-        } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-    }));
+public class YourPlugin extends JavaPlugin {
+    @Override
+    public void onEnable() {
+         EventHelper.RegisterAllListeners("cz.sionzee.testplugin", (listenerClass -> {
+            try {
+                Bukkit.getPluginManager().registerEvents(listenerClass.newInstance(), this);
+                Bukkit.broadcastMessage("Listener " + listenerClass.getSimpleName() + " was registered automatically.");
+            } catch (InstantiationException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }));
+    }
 }
 ```
